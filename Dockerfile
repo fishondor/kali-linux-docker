@@ -34,6 +34,10 @@ RUN sed -i 's/strict_chain/#strict_chain/' proxychains.conf && \
     echo 'socks5 127.0.0.1 9050' >> proxychains.conf
 WORKDIR /
 
+WORKDIR /usr/bin
+COPY config/get-seclists .
+RUN chmod +x get-seclists
+WORKDIR /
+
 RUN apt-get install wafw00f -y --no-install-recommends
 RUN apt-get install wpscan -y --no-install-recommends
-RUN apt-get install seclists -y --no-install-recommends
