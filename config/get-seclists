@@ -1,0 +1,12 @@
+#!/bin/bash
+
+FILE_PATH=$1
+
+OUTPUT=$(curl https://raw.githubusercontent.com/danielmiessler/SecLists/master/$FILE_PATH)
+
+echo $OUTPUT
+
+if [ -z "$2" ]; then exit 0; fi
+
+echo $OUTPUT >> $2
+
