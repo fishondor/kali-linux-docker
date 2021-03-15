@@ -1,18 +1,42 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-    echo "Error: missing path argument. Please provide file path. List can be found in: https://github.com/danielmiessler/SecLists";
+GIT_RAW_URL="https://raw.githubusercontent.com"
+GIT_URL="https://github.com"
+
+declare -A LISTS_REPOS=( [seclists]="danielmiessler/SecLists" 
+                        [dirb]="v0re/dirb" )
+
+while getopts l:p:f: flag
+do
+    case "${flag}" in
+        l) LIST_REPO_NAME=${OPTARG};;
+        p) LIST_FILE_PATH=${OPTARG};;
+        f) SAVE_TO_FILE=${OPTARG};;
+    esac
+done
+
+if [ -z ${LIST_REPO_NAME+x} ]; then
+    echo "Error: missing list repo name argument. Please provide file path with -l flag. Available lists: ${!LISTS_REPOS[@]}";
     exit 1;
 fi
 
-FILE_PATH=$1
+LIST_REPO=${LISTS_REPOS[$LIST_REPO_NAME]}
+if [ -z "$LIST_REPO" ]; then
+    echo "Error: could not find matching repo to ${LIST_REPO_NAME}. -l flag must be one of: ${!LISTS_REPOS[@]}";
+    exit 1;
+fi
 
-OUTPUT=$(curl https://raw.githubusercontent.com/danielmiessler/SecLists/master/$FILE_PATH)
+if [ -z ${LIST_FILE_PATH+x} ]; then
+    echo "Error: missing path argument. Please provide file path with -p flag. List for ${LIST_REPO_NAME} can be found in: ${GIT_URL}${LIST_REPO}";
+    exit 1;
+fi
 
-if [ -z "$2" ]; then
+OUTPUT=$(curl $GIT_RAW_URL/$LIST_REPO/$LIST_FILE_PATH)
+
+if [ -z ${SAVE_TO_FILE+x} ]; then
     echo "$OUTPUT";
     exit 0;
 fi
 
-echo "$OUTPUT" >> $2
+echo "$OUTPUT" >> $SAVE_TO_FILE
 
