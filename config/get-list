@@ -1,37 +1,28 @@
 #!/bin/bash
 
-GIT_RAW_URL="https://raw.githubusercontent.com"
-GIT_URL="https://github.com"
+declare -A LISTS_REPOS=( [seclists]="https://github.com/danielmiessler/SecLists/tree/master/Passwords" 
+                        [dirb]="https://github.com/v0re/dirb/tree/master/wordlists" )
 
-declare -A LISTS_REPOS=( [seclists]="danielmiessler/SecLists" 
-                        [dirb]="v0re/dirb" )
-
-while getopts l:p:f: flag
+while getopts l:f: flag
 do
     case "${flag}" in
-        l) LIST_REPO_NAME=${OPTARG};;
-        p) LIST_FILE_PATH=${OPTARG};;
+        l) LIST_URL=${OPTARG};;
         f) SAVE_TO_FILE=${OPTARG};;
     esac
 done
 
-if [ -z ${LIST_REPO_NAME+x} ]; then
-    echo "Error: missing list repo name argument. Please provide file path with -l flag. Available lists: ${!LISTS_REPOS[@]}";
-    exit 1;
+if [ -z ${LIST_URL+x} ]; then
+    echo "Use this command to download lists.
+    Arguments:
+    -l    List file url. Use raw display link
+    -f    (optional) file path to save the content to. if not defined, the content will be displayed in console.";
+    
+    echo "Recomended lists by packages:";
+    for K in "${!LISTS_REPOS[@]}"; do echo $K --- ${LISTS_REPOS[$K]}; done
+    exit 0;
 fi
 
-LIST_REPO=${LISTS_REPOS[$LIST_REPO_NAME]}
-if [ -z "$LIST_REPO" ]; then
-    echo "Error: could not find matching repo to ${LIST_REPO_NAME}. -l flag must be one of: ${!LISTS_REPOS[@]}";
-    exit 1;
-fi
-
-if [ -z ${LIST_FILE_PATH+x} ]; then
-    echo "Error: missing path argument. Please provide file path with -p flag. List for ${LIST_REPO_NAME} can be found in: ${GIT_URL}${LIST_REPO}";
-    exit 1;
-fi
-
-OUTPUT=$(curl $GIT_RAW_URL/$LIST_REPO/$LIST_FILE_PATH)
+OUTPUT=$(curl $LIST_URL)
 
 if [ -z ${SAVE_TO_FILE+x} ]; then
     echo "$OUTPUT";
