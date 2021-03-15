@@ -18,6 +18,7 @@ RUN apt-get install preload \
                     curl \
                     vim \
                     whois \
+                    wget \
                     -y
 
 RUN echo 'figlet hello wisestampers!!' >> /root/.bashrc
@@ -42,5 +43,9 @@ COPY config/wrapper-scripts.sh /
 RUN apt-get install wafw00f -y --no-install-recommends
 RUN apt-get install wpscan -y --no-install-recommends
 RUN apt-get install dirb -y --no-install-recommends
+
+RUN wget https://github.com/Arachni/arachni/releases/download/v1.5.1/arachni-1.5.1-0.5.12-linux-x86_64.tar.gz && \
+    tar -xvf arachni-1.5.1-0.5.12-linux-x86_64.tar.gz && \
+    echo "alias arachni-start='arachni-1.5.1-0.5.12/bin/arachni_web'" >> /root/.bashrc
 
 ENTRYPOINT /wrapper-scripts.sh && /bin/bash
