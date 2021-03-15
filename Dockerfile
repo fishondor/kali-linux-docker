@@ -33,13 +33,14 @@ RUN sed -i 's/strict_chain/#strict_chain/' proxychains.conf && \
     echo 'socks5 127.0.0.1 9050' >> proxychains.conf
 
 WORKDIR /usr/bin
-COPY config/get-seclists .
-RUN chmod +x get-seclists
+COPY config/get-list .
+RUN chmod +x get-list
 
 WORKDIR /
 COPY config/wrapper-scripts.sh /
 
 RUN apt-get install wafw00f -y --no-install-recommends
 RUN apt-get install wpscan -y --no-install-recommends
+RUN apt-get install dirb -y --no-install-recommends
 
 ENTRYPOINT /wrapper-scripts.sh && /bin/bash
