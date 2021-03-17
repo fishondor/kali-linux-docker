@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  kali:
+    image: fishondor/pentests
+    restart: "no"
+    network_mode: host
+
+  bwapp:
+    image: raesene/bwapp
+    ports:
+      - "4600:80"
+    restart: always
