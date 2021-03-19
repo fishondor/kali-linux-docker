@@ -7,7 +7,9 @@ services:
     network_mode: host
 
   bwapp:
-    image: raesene/bwapp
+    build:
+      context: ./services
+      dockerfile: bwapp.Dockerfile
     ports:
       - "4600:80"
     restart: always
