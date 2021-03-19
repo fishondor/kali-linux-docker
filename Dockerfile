@@ -19,6 +19,7 @@ RUN apt-get install preload \
                     vim \
                     whois \
                     wget \
+                    python3-distutils \
                     -y
 
 RUN echo 'figlet hello wisestampers!!' >> /root/.bashrc
@@ -45,5 +46,6 @@ RUN apt-get install wpscan -y --no-install-recommends
 RUN apt-get install dirb -y --no-install-recommends
 RUN apt-get install sslscan -y --no-install-recommends
 RUN apt-get install sqlmap -y --no-install-recommends
+RUN apt-get install weevely -y --no-install-recommends
 
 ENTRYPOINT /wrapper-scripts.sh && /bin/bash
