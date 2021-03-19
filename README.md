@@ -17,12 +17,12 @@ Other services are provided also to enable running the tests localy:
     - This container will stop once bash session is exited and will not persist with data. To persist data add volumes as necessary.
     - configured to use host for network, this enables making reqests to other services via localhost of host. No need to address the docker network service name when making http requests.
 - [Wordpress](https://codex.wordpress.org/Main_Page):
-    - Run by using docker compose: ```docker-compose run wordpress```
+    - Run by using docker compose: `docker-compose up wordpress`
     - Creates a new wordpress installation available at port 4500.
     - Once running the container go to ```http://localhost:4500``` and configure wordpress.
     - Persisting data based on named volumes
 - [Bwapp](http://www.itsecgames.com/):
-    - Run by using docker compose: ```docker-compose run bwapp```
+    - Run by using docker compose: ```docker-compose up bwapp```
     - Creates a new bwapp installation available at port 4600.
     - Once running the container go to ```http://localhost:4600/install.php```, this will enable db initialization. After that, create user and continue hacking
     - Persisting data based in named volumes
