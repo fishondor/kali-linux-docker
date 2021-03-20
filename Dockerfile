@@ -20,6 +20,7 @@ RUN apt-get install preload \
                     whois \
                     wget \
                     python3-distutils \
+                    jq \
                     -y
 
 RUN echo 'figlet hello wisestampers!!' >> /root/.bashrc
