@@ -1,33 +1,35 @@
 #!/bin/bash
 
-declare -A LISTS_REPOS=( [seclists]="https://github.com/danielmiessler/SecLists/tree/master/Passwords" 
-                        [dirb]="https://github.com/v0re/dirb/tree/master/wordlists" )
+declare -A LISTS_REPOS=( [seclists]="https://api.github.com/repos/danielmiessler/SecLists/contents" 
+                        [dirb]="https://api.github.com/repos/v0re/dirb/contents/wordlists" )
 
-while getopts l:f: flag
+while getopts p:r: flag
 do
     case "${flag}" in
-        l) LIST_URL=${OPTARG};;
-        f) SAVE_TO_FILE=${OPTARG};;
+        r) REPO_NAME=${OPTARG};;
+        p) FILE_PATH=${OPTARG};;
     esac
 done
 
-if [ -z ${LIST_URL+x} ]; then
-    echo "Use this command to download lists.
+if [ -z ${REPO_NAME+x} ]; then
+    echo "Please specify the repository name to list.
     Arguments:
-    -l    List file url. Use raw display link
-    -f    (optional) file path to save the content to. if not defined, the content will be displayed in console.";
+    -r    Repository name
+    -p    (optional) path inside the repo";
     
-    echo "Recomended lists by packages:";
-    for K in "${!LISTS_REPOS[@]}"; do echo $K --- ${LISTS_REPOS[$K]}; done
+    echo "Available lists:";
+    for K in "${!LISTS_REPOS[@]}"; do echo "name: $K. content api url: ${LISTS_REPOS[$K]}"; done
+    echo "To download list and append to file use: curl [REMOTE FILE PATH] >> [LOCAL FILE TO WRITE]"
     exit 0;
 fi
 
-OUTPUT=$(curl $LIST_URL)
+URLPATH="${LISTS_REPOS[$REPO_NAME]}";
 
-if [ -z ${SAVE_TO_FILE+x} ]; then
-    echo "$OUTPUT";
-    exit 0;
+if [ ! -z ${FILE_PATH+x} ]; then
+    URLPATH+="/${FILE_PATH}"
 fi
 
-echo "$OUTPUT" >> $SAVE_TO_FILE
+OUTPUT=$(curl -H "Accept: application/vnd.github.v3+json" ${URLPATH}  | jq '.[] | {path: .path, download_url: .download_url}');
+
+echo "$OUTPUT"
 
