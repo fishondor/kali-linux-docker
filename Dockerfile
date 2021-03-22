@@ -48,5 +48,6 @@ RUN apt-get install dirb -y --no-install-recommends
 RUN apt-get install sslscan -y --no-install-recommends
 RUN apt-get install sqlmap -y --no-install-recommends
 RUN apt-get install weevely -y --no-install-recommends
+RUN apt-get install nmap -y --no-install-recommends
 
 ENTRYPOINT /wrapper-scripts.sh && /bin/bash
