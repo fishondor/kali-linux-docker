@@ -4,24 +4,25 @@ services:
   kali:
     image: fishondor/pentests
     restart: "no"
-    network_mode: host
 
   bwapp:
     build:
       context: ./services
       dockerfile: bwapp.Dockerfile
     ports:
-      - "4600:80"
+      - "4600:4600"
     restart: always
 
   wordpress:
     depends_on:
       - db
-    image: wordpress:latest
+    build:
+      context: ./services
+      dockerfile: wordpress.Dockerfile
     volumes:
       - wp_data:/var/www/html
     ports:
-      - "4500:80"
+      - "4500:4500"
     restart: always
     environment:
       WORDPRESS_DB_HOST: db:3306
