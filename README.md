@@ -43,5 +43,6 @@ Run `get-list` in running kali container for description and help
 * [sslscan](https://github.com/rbsec/sslscan)
 * [sqlmap](http://sqlmap.org/)
 * [weevely](https://tools.kali.org/maintaining-access/weevely)
+* [nmap](https://nmap.org/)
 
 > For a full list of available packages (not installed here) reffer to https://tools.kali.org/tools-listing
