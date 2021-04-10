@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   kali:
-    image: fishondor/pentests
+    image: fishondor/pentests:all
     restart: "no"
 
   bwapp:
