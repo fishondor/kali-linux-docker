@@ -49,3 +49,5 @@ Run `get-list` in running kali container for description and help
 Use ```fishondor/pentests:latest``` or ```fishondor/pentests:all``` for all the above packages installed
 
 > For a full list of available packages (not installed here) reffer to https://tools.kali.org/tools-listing
+
+- View docker registry at https://hub.docker.com/repository/docker/fishondor/pentests
