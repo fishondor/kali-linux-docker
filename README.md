@@ -13,9 +13,9 @@ Other services are provided also to enable running the tests localy:
 
 ### Services
 - [Kali-linux](https://www.kali.org/docs/containers/using-kali-docker-images/):
-    - Run or from docker-compose: ```docker-compose run kali /bin/bash``` or with docker ```docker run -it fishondor/pentests /bin/bash```
+    - Run with docker-compose: ```docker-compose run kali /bin/bash``` or with docker ```docker run -it fishondor/pentests /bin/bash```
     - This container will stop once bash session is exited and will not persist with data. To persist data add volumes as necessary.
-    - configured to use host for network, this enables making reqests to other services via localhost of host. No need to address the docker network service name when making http requests.
+    - This image runs tor and proxychains by default, use ```service tor status/stop/start```. Run http prefixed with ```proxychains``` to use it. 
 - [Wordpress](https://codex.wordpress.org/Main_Page):
     - Run by using docker compose: `docker-compose up wordpress`
     - Creates a new wordpress installation available at port 4500.
@@ -44,5 +44,8 @@ Run `get-list` in running kali container for description and help
 * [sqlmap](http://sqlmap.org/)
 * [weevely](https://tools.kali.org/maintaining-access/weevely)
 * [nmap](https://nmap.org/)
+
+> Each package here is available in a standalone kali docker image, use package name as tag to get each image ex. ```fisondor/pentests:wpscan``` <br>
+Use ```fishondor/pentests:latest``` or ```fishondor/pentests:all``` for all the above packages installed
 
 > For a full list of available packages (not installed here) reffer to https://tools.kali.org/tools-listing
