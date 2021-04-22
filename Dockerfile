@@ -5,7 +5,6 @@ RUN apt-get update -y && \
     apt-get dist-upgrade -y
 
 RUN apt-get install preload \
-                    proxychains \
                     git \
                     ftp \
                     bleachbit \
@@ -14,14 +13,17 @@ RUN apt-get install preload \
                     figlet \
                     ssh \
                     net-tools \
-                    tor \
                     curl \
                     vim \
                     whois \
                     wget \
                     python3-distutils \
                     jq \
+                    iputils-ping \
+                    man \
                     -y
+
+RUN apt-get install proxychains tor -y
 
 RUN echo 'figlet hello wisestampers!!' >> /root/.bashrc
 
