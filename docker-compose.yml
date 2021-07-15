@@ -2,35 +2,8 @@ version: '3.4'
 
 services:
   kali:
-    image: fishondor/pentests:all
+    build: .
     restart: "no"
-
-  bwapp:
-    build:
-      context: ./services
-      dockerfile: bwapp.Dockerfile
-    ports:
-      - "4600:4600"
-    restart: always
-
-  wordpress:
-    depends_on:
-      - db
-    build:
-      context: ./services
-      dockerfile: wordpress.Dockerfile
-    volumes:
-      - wp_data:/var/www/html
-    ports:
-      - "4080:80"
-      - "4443:443"
-      - "4022:22"
-    restart: always
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
 
   db:
     image: mysql:5.7
@@ -42,6 +15,49 @@ services:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
+
+  wp-cli:
+    image: bozdoz/wordpress-initialize
+    env_file: ./services/.env
+    depends_on:
+      - db
+    volumes: 
+      - wp_data:/var/www/html
+      - ./services/initialize-wp.sh:/app/initialize.sh
+
+  wordpress:
+    depends_on:
+      - wp-cli
+    image: wordpress
+    volumes:
+      - wp_data:/var/www/html
+    ports:
+      - "80:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+
+  bwapp:
+    build:
+      context: ./services
+      dockerfile: bwapp.Dockerfile
+    ports:
+      - "4600:4600"
+    restart: always
+
+  apache-ssl:
+    build:
+      context: ./services
+      dockerfile: wordpress.ssl.Dockerfile
+    ports:
+      - "4080:80"
+      - "4443:443"
+      - "4022:22"
+    restart: always
+
 volumes:
   db_data: {}
   wp_data: {}
