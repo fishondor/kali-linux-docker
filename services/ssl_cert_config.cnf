@@ -1,8 +1,3 @@
-[req]
-default_bits = 2048
-prompt = no
-default_md = sha256
-distinguished_name = dn
 [dn]
 C=US
 ST=RandomState
@@ -10,4 +5,13 @@ L=RandomCity
 O=RandomOrganization
 OU=RandomOrganizationUnit
 emailAddress=admin@local.com
-CN=local.certificate.com
+CN=local.pentest.com
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+[EXT]
+subjectAltName=DNS:local.pentest.com
+keyUsage=digitalSignature
+extendedKeyUsage=serverAuth

@@ -28,11 +28,14 @@ services:
   wordpress:
     depends_on:
       - wp-cli
-    image: wordpress
+    build:
+      context: ./services
+      dockerfile: wordpress.ssl.Dockerfile
     volumes:
       - wp_data:/var/www/html
     ports:
       - "80:80"
+      - "443:443"
     restart: always
     environment:
       WORDPRESS_DB_HOST: db:3306
@@ -46,16 +49,6 @@ services:
       dockerfile: bwapp.Dockerfile
     ports:
       - "4600:4600"
-    restart: always
-
-  apache-ssl:
-    build:
-      context: ./services
-      dockerfile: wordpress.ssl.Dockerfile
-    ports:
-      - "4080:80"
-      - "4443:443"
-      - "4022:22"
     restart: always
 
 volumes:
