@@ -1,4 +1,4 @@
-FROM wordpress
+FROM wordpress:latest
 
 RUN mkdir /etc/apache2/ssl
 
